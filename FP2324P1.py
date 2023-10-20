@@ -21,7 +21,6 @@ def eh_intersecao(t): #2.1.3
              and (64<ord(t[0])<91) and (isinstance(t[1] , int)) and (0<t[1]<100)):
         return False
     return True
-print(eh_intersecao((25, 'B')))
 
 
 def eh_intersecao_valida(t, i): #2.1.4
@@ -81,17 +80,12 @@ def territorio_para_str(tup): #2.1.8
     a = 0
     b = len(tup[0])
     n = 0
-    if len(tup[0]) > 9:
-        string += " "
     while not (chr(len(tup)+64) in string):
         string += " " + chr(a+65)
         a += 1
     while b != 0:
-        if len(tup[0]) > 9:
-            if b >= 10:
-                mid += "\n " + str(b)
-            else:
-                mid += "\n " + " " + str(b)
+        if b >= 10:
+            mid += "\n" + str(b)
         else:
             mid += "\n " + str(b)
         while n != len(tup):
@@ -101,20 +95,14 @@ def territorio_para_str(tup): #2.1.8
             else:
                 mid += " X"
             n +=1
-        if len(tup[0]) > 9:
-            if b > 9:
-                mid += " " + str(b)
-            else:
-                mid += "  " + str(b)
+        if b > 9:
+            mid += " " + str(b)
         else:
             mid += "  " + str(b)
         b -= 1
         n = 0
     
     return " " + string + mid + "\n " + string
-
-t=((1,1,1,0,0,0,0,0,1,1),)
-territorio_para_str(t)
 
 
 
