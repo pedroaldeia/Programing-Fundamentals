@@ -1,8 +1,10 @@
 def eh_territorio(arg): #2.1.1
+    if not (type(arg) == tuple and len(arg)>=1):
+        return False
     for b in range(len(arg)):
-        if not ( type(arg) == tuple and type(arg[b-1]) == tuple and len (arg[b-1]) == len (arg[0]) and len(arg)>=1 and len(arg[0])>=1):
+        if not (type(arg[b-1]) == tuple and len(arg[0])>=1 and len(arg[b-1]) == len(arg[0])):
             return False
-        for n in arg[b]: #wtf não sei porque é que isto nao funciona
+        for n in arg[b]: 
             if not n in (0,1):
                 return False
     return True
@@ -17,7 +19,7 @@ def obtem_ultima_intersecao(t): #2.1.2
 
 def eh_intersecao(t): #2.1.3
     #Se o primeiro elemento do tuplo faz parte do alfabeto e se o segundo é um inteiro entre 0 e 100
-    if not (isinstance(t, tuple) and isinstance(t[0], str) and len(t[0]) == 1\
+    if not (isinstance(t, tuple) and len(t) == 2 and isinstance(t[0], str) and len(t[0]) == 1\
              and (64<ord(t[0])<91) and (isinstance(t[1] , int)) and (0<t[1]<100)):
         return False
     return True
@@ -108,9 +110,9 @@ def territorio_para_str(tup): #2.1.8
 
 def obtem_cadeia(t, inp): #2.2.1
     #
-    cadeia = [inp]
     if not (eh_territorio(t) or eh_intersecao(inp) or eh_intersecao_valida(t, inp)):
         raise ValueError("obtem_cadeia: argumentos invalidos")
+    cadeia = [inp]
     for tup in cadeia:
         tup_adj = obtem_intersecoes_adjacentes(t, tup)
         for adj in tup_adj:
@@ -121,7 +123,7 @@ def obtem_cadeia(t, inp): #2.2.1
 
 
 def obtem_vale(t, inp): #2.2.2
-    if eh_intersecao_livre(t, inp):
+    if (eh_intersecao_livre(t, inp)) or not (eh_territorio(t) or eh_intersecao(inp) or eh_intersecao_valida(t, inp)):
         raise ValueError("obtem_vale: argumentos invalidos")
     tup1 = obtem_cadeia(t, inp)
     vales = ()
