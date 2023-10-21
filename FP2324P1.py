@@ -113,7 +113,7 @@ def territorio_para_str(tup): #2.1.8
 
 def obtem_cadeia(t, inp): #2.2.1
     #
-    if not (eh_territorio(t) or eh_intersecao(inp) or eh_intersecao_valida(t, inp)):
+    if not (eh_territorio(t) and eh_intersecao(inp) and eh_intersecao_valida(t, inp)):
         raise ValueError("obtem_cadeia: argumentos invalidos")
     cadeia = [inp]
     for tup in cadeia:
@@ -126,7 +126,7 @@ def obtem_cadeia(t, inp): #2.2.1
 
 
 def obtem_vale(t, inp): #2.2.2
-    if (eh_intersecao_livre(t, inp)) or not (eh_territorio(t) or eh_intersecao(inp) or eh_intersecao_valida(t, inp)):
+    if (not ((eh_territorio(t) and eh_intersecao(inp) and eh_intersecao_valida(t, inp))) or (eh_intersecao_livre(t, inp))):
         raise ValueError("obtem_vale: argumentos invalidos")
     tup1 = obtem_cadeia(t, inp)
     vales = ()
@@ -141,7 +141,7 @@ def obtem_vale(t, inp): #2.2.2
 
 def verifica_conexao(t, a, b): #2.3.1
     cadeia = obtem_cadeia(t, a)
-    if not (eh_territorio(t)  and eh_intersecao_valida(t, a) and eh_intersecao_valida(t, b) and eh_intersecao(a) and eh_intersecao(b)):
+    if not (eh_territorio(t) and eh_intersecao_valida(t, a) and eh_intersecao_valida(t, b) and eh_intersecao(a) and eh_intersecao(b)):
         raise ValueError ("verifica_conexao: argumentos invalidos")
     if b in cadeia:
         return True
