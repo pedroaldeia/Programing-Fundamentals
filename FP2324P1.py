@@ -2,7 +2,10 @@ def eh_territorio(arg): #2.1.1
     if not (type(arg) == tuple and len(arg)>=1):
         return False
     for b in range(len(arg)):
-        if not (type(arg[b-1]) == tuple and len(arg[0])>=1 and len(arg[b-1]) == len(arg[0])):
+        if not (type(arg[b-1]) == tuple):
+            return False
+    for b in range(len(arg)):
+        if not (len(arg[0])>=1 and len(arg[b-1]) == len(arg[0])):
             return False
         for n in arg[b]: 
             if not n in (0,1):
