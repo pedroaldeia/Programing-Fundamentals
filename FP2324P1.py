@@ -5,7 +5,7 @@ def eh_territorio(arg): #2.1.1
     if not (type(arg) == tuple and len(arg)>=1 and len(arg)<=26): #Verifica se o elemento é um tuplo e se tem len >= 1
         return False
     for b in range(len(arg)): #Verifica se os elementos dentro do tuplo são tuplos
-        if not (type(arg[b-1]) == tuple):
+        if not (type(arg[b]) == tuple):
             return False
     for b in range(len(arg)): #Verifica se a len dos tuplos é >= 1 e se todos os tuplos têm a mesma len
         if not (len(arg[0])>=1 and len(arg)<=99 and len(arg[b-1]) == len(arg[0])):
