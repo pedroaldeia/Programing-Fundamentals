@@ -174,12 +174,10 @@ def obtem_vale(t, inp): #2.2.2
         (eh_intersecao_livre(t, inp))):
         #Verifica se o território e a interseção são válidos e se a interseção é livre
         raise ValueError("obtem_vale: argumentos invalidos")
-    tup1 = obtem_cadeia(t, inp) #obtém a cadeia de montanhas na qual a interseção está contida
     vales = ()
-    for a in tup1:
-        tup2 = obtem_intersecoes_adjacentes(t, a) #obtém as interseções adjacentes a cada elemento 
+    for a in obtem_cadeia(t, inp):#obtém a cadeia de montanhas na qual a interseção está contida 
+        for b in obtem_intersecoes_adjacentes(t, a):#obtém as interseções adjacentes a cada elemento 
         #da cadeia
-        for b in tup2:
             if eh_intersecao_livre(t, b) and not b in vales:
                 #Se forem interseções livres são adicionadas ao tuplo vales
                 vales += (b,)
@@ -195,8 +193,8 @@ def verifica_conexao(t, a, b): #2.3.1
     if not (eh_territorio(t) and eh_intersecao_valida(t, a) and eh_intersecao_valida(t, b) and \
             eh_intersecao(a) and eh_intersecao(b)): #Verifica se o terreno e interseções são válidas
         raise ValueError ("verifica_conexao: argumentos invalidos")
-    cadeia = obtem_cadeia(t, a) #Obtém a cadeia de "a"
-    if b in cadeia: 
+
+    if b in obtem_cadeia(t, a): #Obtém a cadeia de "a"
         return True #Verifica se "b" está na cadeia de "a"
     return False
 
@@ -214,17 +212,20 @@ def calcula_numero_montanhas(t): #2.3.2
     return count
 
 def calcula_numero_cadeias_montanhas(t): #2.3.3
-    ''''''
-    if not eh_territorio(t):
+    ''' calcula numero cadeias montanhas: territorio → int
+    recebe um território e devolve o número de cadeias de montanhas contidas no território'''
+
+    if not eh_territorio(t): #Verifica se t é território
         raise ValueError("calcula_numero_cadeias_montanhas: argumento invalido")
     cadeias = ()
-    for i in range(len (t)):
+    a = 0
+    for i in range(len(t)):
         for n in range(len(t[i])):
-            if t[i][n] == 1:
-                cadeia1 = obtem_cadeia(t, (chr(i+65), n + 1))
-                if not cadeia1 in cadeias:
-                    cadeias += (cadeia1, )
-    return len(cadeias)
+            if t[i][n] == 1:            
+                if (chr(i+65), n + 1) not in cadeias: #Verifica se a interseção não está em cadeias
+                    cadeias += obtem_cadeia(t, (chr(i+65), n + 1))#Adiciona se não estiver
+                    a += 1 #conta como mais uma cadeia
+    return a 
 
 def calcula_tamanho_vales(t): #2.3.4
     '''calcula tamanho vales: territorio → int
