@@ -2,16 +2,16 @@ def eh_territorio(arg): #2.1.1
     '''eh territorio: universal → booleano
     Verifica se um argumento é território, se for devolve True, caso contrário devolve False'''
 
-    if not (type(arg) == tuple and len(arg)>=1): #Verifica se o elemento é um tuplo e se tem len >= 1
+    if not (type(arg) == tuple and len(arg)>=1 and len(arg)<=26): #Verifica se o elemento é um tuplo e se tem len >= 1
         return False
     for b in range(len(arg)): #Verifica se os elementos dentro do tuplo são tuplos
         if not (type(arg[b-1]) == tuple):
             return False
     for b in range(len(arg)): #Verifica se a len dos tuplos é >= 1 e se todos os tuplos têm a mesma len
-        if not (len(arg[0])>=1 and len(arg[b-1]) == len(arg[0])):
+        if not (len(arg[0])>=1 and len(arg)<=99 and len(arg[b-1]) == len(arg[0])):
             return False
         for n in arg[b]: #Verifica se os elementos dentro dos tuplos são 0 ou 1
-            if not n in (0,1):
+            if not (type(n) == int and n in (0,1)):
                 return False
     return True
 
@@ -34,7 +34,7 @@ def eh_intersecao(t): #2.1.3
     #se a len da string é 1, se é um caracter entre as ordens 65 e 90 inclusive, se o segundo elemento
     #é um número inteiro e, finalmente, se é um número entre 1 e 99 inclusive
     if not (isinstance(t, tuple) and len(t) == 2 and isinstance(t[0], str) and len(t[0]) == 1\
-             and (64<ord(t[0])<91) and (isinstance(t[1] , int)) and (0<t[1]<100)):
+             and (64 < ord(t[0]) < 91) and (isinstance(t[1] , int)) and (0 < t[1] < 100)):
         return False
     return True
 
@@ -46,7 +46,7 @@ def eh_intersecao_valida(t, i): #2.1.4
 
     #O código vai buscar a ordem da letra (da coordenada) e verifica se é maior do que a len de t
     #Também verifica se o número da coordenada é maior do que a len dos tuplos em t
-    if (ord(i[0])-64>len(t) or i[1]>len(t[0])):
+    if (ord(i[0]) - 64 > len(t) or i[1] > len(t[0])):
             return False
     return True
 
@@ -56,7 +56,7 @@ def eh_intersecao_livre(t, i): #2.1.5
     Devolve True se uma dada interseção não for uma montanha, caso contrário devolve False'''
 
     #Verifica se a interseção dada corresponde a um zero nos tuplos
-    if t[ord(i[0])-65][i[1]-1] == 0:
+    if t[ord(i[0]) - 65][i[1] - 1] == 0:
         return True
     return False
 
@@ -70,13 +70,13 @@ def obtem_intersecoes_adjacentes(t, i): #2.1.6
     #adiciona as interseções adjacentes
     intersecoes = ()
     if i[1] != 1:
-        intersecoes += ((chr(ord(i[0])), i[1]-1),)
+        intersecoes += ((i[0], i[1] - 1),)
     if i[0] != "A":
-        intersecoes += ((chr(ord(i[0])-1), i[1]),)
-    if ord(i[0]) -64 != len(t):
-        intersecoes += ((chr(ord(i[0])+1), i[1]),)
+        intersecoes += ((chr(ord(i[0]) - 1), i[1]),)
+    if ord(i[0]) - 64 != len(t):
+        intersecoes += ((chr(ord(i[0]) + 1), i[1]),)
     if i[1] != len(t[0]):
-        intersecoes += ((chr(ord(i[0])), i[1]+1),)
+        intersecoes += ((i[0], i[1] + 1),)
     
     return intersecoes
 
@@ -91,17 +91,17 @@ def ordena_intersecoes(tup): #2.1.7
     lis = list(tup) #Torna o tuplo numa lista
     while a != 1:   #Verifica se houveram alterações no tuplo, se não for o caso termina o ciclo
         a = 1
-        for i in range (len(lis) -1):  
+        for i in range (len(lis) - 1):  
             #Verifica se, para cada interseção, se a interseção seguinte 
             #tem linha de ordem menor, se for o caso, trocam de ordem no tuplo 
-            if lis[i][1] > lis[i+1][1]:
-                    lis[i], lis[i+1] = lis[i+1], lis[i]
+            if lis[i][1] > lis[i + 1][1]:
+                    lis[i], lis[i + 1] = lis[i + 1], lis[i]
                     a=0
-            elif lis[i][1] == lis[i+1][1]:
+            elif lis[i][1] == lis[i + 1][1]:
                 #Se tiverem a mesma linha verifica se a seguinte tem coluna de menor ordem,
                 #se for o caso, trocam de ordem no tuplo
-                if lis[i][0] > lis[i+1][0]:
-                    lis[i], lis[i+1] = lis[i+1], lis[i]
+                if lis[i][0] > lis[i + 1][0]:
+                    lis[i], lis[i + 1] = lis[i + 1], lis[i]
                     a=0
     tup = tuple(lis) #Torna a lista num tuplo
     return tup
@@ -116,8 +116,8 @@ def territorio_para_str(tup): #2.1.8
     a = 0
     b = len(tup[0])
     n = 0
-    while not (chr(len(tup)+64) in string): #Adiciona as letras
-        string += " " + chr(a+65)
+    while not (chr(len(tup) + 64) in string): #Adiciona as letras
+        string += " " + chr(a + 65)
         a += 1
     while b != 0:  #Adiciona o número da linha correspondente no início de cada linha da string
         if b >= 10:
@@ -126,11 +126,11 @@ def territorio_para_str(tup): #2.1.8
             mid += "\n " + str(b)
         while n != len(tup):
              #Adiciona um "." de a interseção correspondente for livre e um "X" caso contrário
-            if tup[n][b-1] == 0:
+            if tup[n][b - 1] == 0:
                 mid += " ."
             else:
                 mid += " X"
-            n +=1
+            n += 1
         if b > 9:   #Adiciona o número da linha correspondente no fim de cada linha da string
             mid += " " + str(b)
         else:
@@ -221,7 +221,7 @@ def calcula_numero_cadeias_montanhas(t): #2.3.3
     for i in range(len (t)):
         for n in range(len(t[i])):
             if t[i][n] == 1:
-                cadeia1 = obtem_cadeia(t, (chr(i+65), n+1))
+                cadeia1 = obtem_cadeia(t, (chr(i+65), n + 1))
                 if not cadeia1 in cadeias:
                     cadeias += (cadeia1, )
     return len(cadeias)
@@ -238,7 +238,7 @@ def calcula_tamanho_vales(t): #2.3.4
     for i in range(len(t)): #Cria cadeia para cada interseção ocupada do terreno
         for n in range(len(t[i])):
             if t[i][n] == 1:
-                cadeia1 = obtem_cadeia(t, (chr(i+65), n+1))
+                cadeia1 = obtem_cadeia(t, (chr(i + 65), n + 1))
                 if not cadeia1 in cadeias: 
                     #Se a cadeia ainda não estiver contida em "cadeias" é adicionada
                     cadeias += (cadeia1, )
