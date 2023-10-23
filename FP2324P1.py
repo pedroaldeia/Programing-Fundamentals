@@ -7,8 +7,8 @@ def eh_territorio(arg): #2.1.1
     for b in range(len(arg)): #Verifica se os elementos dentro do tuplo são tuplos
         if not (type(arg[b]) == tuple):
             return False
-    for b in range(len(arg)): #Verifica se a len dos tuplos é >= 1 e se todos os tuplos têm a mesma len
-        if not (len(arg[0])>=1 and len(arg)<=99 and len(arg[b-1]) == len(arg[0])):
+    for b in range(len(arg)): #Verifica se a len dos tuplos é >= 1  e <= 99 e se todos os tuplos têm a mesma len
+        if not (len(arg[0])>=1 and len(arg[0])<=99 and len(arg[b-1]) == len(arg[0])):
             return False
         for n in arg[b]: #Verifica se os elementos dentro dos tuplos são 0 ou 1
             if not (type(n) == int and n in (0,1)):
